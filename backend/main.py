@@ -25,6 +25,8 @@ import socketio
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 load_dotenv()
 
@@ -73,16 +75,26 @@ fastapi_app.add_middleware(
 from api.routes import router as sim_router
 fastapi_app.include_router(sim_router)
 
-@fastapi_app.get("/", tags=["health"])
-def root():
-    return {
-        "service" : "Alaska Pipeline Transient Monitor",
-        "status"  : "online",
-        "docs"    : "/docs",
-        "socket"  : "ws://localhost:8000/socket.io/",
-        "event"   : "live_pipeline_update",
-        "note"    : "Run with: uvicorn main:socket_app --reload --port 8000",
-    }
+_FRONTEND_DIST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "frontend", "dist")
+
+if os.path.isdir(_FRONTEND_DIST):
+    fastapi_app.mount("/assets", StaticFiles(directory=os.path.join(_FRONTEND_DIST, "assets")), name="assets")
+
+    @fastapi_app.get("/", include_in_schema=False)
+    @fastapi_app.get("/{full_path:path}", include_in_schema=False)
+    def serve_spa(full_path: str = ""):
+        index = os.path.join(_FRONTEND_DIST, "index.html")
+        return FileResponse(index)
+else:
+    @fastapi_app.get("/", tags=["health"])
+    def root():
+        return {
+            "service" : "Alaska Pipeline Transient Monitor",
+            "status"  : "online",
+            "docs"    : "/docs",
+            "socket"  : "/socket.io/",
+            "event"   : "live_pipeline_update",
+        }
 
 @fastapi_app.get("/health", tags=["health"])
 def health():

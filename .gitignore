@@ -15,7 +15,7 @@ env/
 
 # Node / Vite
 node_modules/
-frontend/dist/
+# frontend/dist/ — not ignored so Render can find the built files after npm build
 frontend/.env.local
 frontend/.env.*.local
 *.local

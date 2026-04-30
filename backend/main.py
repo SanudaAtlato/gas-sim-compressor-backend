@@ -107,6 +107,9 @@ socket_app = socketio.ASGIApp(
     socketio_path   = "socket.io",   # matches default client path
 )
 
+# Alias so both `uvicorn main:app` and `uvicorn main:socket_app` work
+app = socket_app
+
 
 # ── Dev entry point ───────────────────────────────────────────────────────────
 

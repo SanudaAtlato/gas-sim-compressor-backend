@@ -1,0 +1,24 @@
+Leak response fix
+=================
+This version fixes the problem where a manually injected leak existed in the backend but the Pressure/Flow charts looked almost unchanged.
+
+What changed:
+1. The backend still injects the leak into the MOC solver as an interior cell outflow.
+2. A visible pressure/flow response layer was added for manual leak demo events:
+   - pressure wave reaches each node after distance / wave speed
+   - pressure drops after the wave arrives
+   - downstream segment flow decreases by the injected leak flow
+   - upstream segment flow slightly increases because the leak is an extra demand
+3. Pressure and Flow charts now show a red vertical "Leak injected" marker.
+4. Flow chart colors were fixed for the actual segment names: PS5_HS1, HS1_PS9, PS9_HS2, HS2_Sink.
+5. Pressure chart colors were fixed for HS1 and HS2.
+
+How to test:
+1. Start the simulation and wait until it reaches a stable condition.
+2. Open Controls > Leak Injection.
+3. Inject a leak around 782 km with 40–60 kg/s.
+4. Watch Pressure & Flow chart. You should now see a visible change after the red leak marker.
+5. Open Leak Detection tab. It should back-calculate the leak location after at least two sensor wave arrivals.
+
+Honest note:
+This is still a demo-level MOC + leak-detection visualization, not a certified industrial RTTM. The detector is meant to show the correct engineering logic clearly in the web app.

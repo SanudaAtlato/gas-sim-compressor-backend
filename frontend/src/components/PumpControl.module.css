@@ -1,0 +1,270 @@
+.wrap { padding: 0; }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.sub {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* ── Card ─────────────────────────────────────────── */
+.card {
+  position: relative;
+  padding: 14px 16px 14px 20px;
+  border-right: 1px solid var(--border);
+  transition: background 0.25s;
+}
+
+.card:last-child { border-right: none; }
+.card[data-on="true"] { background: rgba(0,201,167,0.04); }
+
+/* Left accent stripe */
+.accent {
+  position: absolute;
+  left: 0; top: 12px; bottom: 12px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--bg-raised);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.accent[data-on="true"] {
+  background: var(--teal);
+  box-shadow: 0 0 8px var(--teal-glow);
+}
+
+/* ── Top ─────────────────────────────────────────── */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.psName {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.metaLabel {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 1px;
+}
+
+.metaSub {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* ── Badge ───────────────────────────────────────── */
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 9px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge[data-on="true"] {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--teal-dim);
+}
+
+.badgeDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.badgeDot[data-on="true"] {
+  background: var(--teal);
+  animation: blink 1.2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.15; }
+}
+
+/* ── Ramp bar ─────────────────────────────────────── */
+.rampRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.rampLabel {
+  font-size: 9px;
+  color: var(--text-muted);
+  width: 34px;
+  flex-shrink: 0;
+}
+
+.rampTrack {
+  flex: 1;
+  height: 4px;
+  background: var(--bg-raised);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.rampFill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--border-light);
+  transition: width 0.5s ease;
+}
+
+.rampFill[data-on="true"] {
+  background: var(--teal);
+  box-shadow: 0 0 6px var(--teal-glow);
+}
+
+.rampVal {
+  font-size: 10px;
+  color: var(--text-secondary);
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── Alpha ───────────────────────────────────────── */
+.alphaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.alphaLabel {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.alphaVal {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* ── Buttons ─────────────────────────────────────── */
+.btnRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.btnStart,
+.btnStop {
+  display: block;
+  width: 100%;
+  padding: 9px 0;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid;
+  transition: background 0.15s, color 0.15s, opacity 0.15s;
+  line-height: 1;
+}
+
+/* START — teal */
+.btnStart {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--teal-dim);
+}
+
+.btnStart:hover:not(:disabled) {
+  background: var(--teal);
+  color: var(--bg-void);
+}
+
+.btnStart:disabled {
+  border-color: var(--border);
+  color: var(--text-muted);
+  background: transparent;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* TRIP — coral */
+.btnStop {
+  border-color: var(--coral);
+  color: var(--coral);
+  background: var(--coral-dim);
+}
+
+.btnStop:hover:not(:disabled) {
+  background: var(--coral);
+  color: var(--bg-void);
+}
+
+.btnStop:disabled {
+  border-color: var(--border);
+  color: var(--text-muted);
+  background: transparent;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* ── Ramp hint ───────────────────────────────────── */
+.hint {
+  margin-top: 10px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-size: 9px;
+  color: var(--amber);
+  background: var(--amber-dim);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .card { border-bottom: 1px solid var(--border); }
+}
+
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,33 @@
+HOW TO RUN THE WEB APP
+======================
+
+1. Extract this ZIP file.
+2. Double-click RUN_WEB_APP.bat.
+3. Wait until the Backend Server and Frontend Server command windows open.
+4. The browser should open automatically at:
+
+   http://localhost:3000
+
+If the browser does not open, copy and paste this into Chrome/Edge:
+
+   http://localhost:3000
+
+Backend API/docs:
+
+   http://localhost:8000/docs
+
+IMPORTANT
+---------
+Do not close the Backend Server or Frontend Server command windows while using the webpage.
+
+Requirements
+------------
+- Windows
+- Python 3.11 recommended
+- Node.js LTS installed
+
+If package installation fails, the most likely cause is the wrong Python version.
+Use Python 3.11, not Python 3.13.
+
+
+Map view note: the new real-world map uses OpenStreetMap tiles, so an internet connection is needed for the map background tiles to load.

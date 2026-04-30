@@ -1,0 +1,110 @@
+.bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-base);
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 12px 16px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card[data-accent="teal"]::before  { background: var(--teal-dim); }
+.card[data-accent="amber"]::before { background: var(--amber-dim); }
+.card[data-accent="blue"]::before  { background: var(--blue-dim); }
+.card[data-accent="coral"]::before { background: var(--coral-dim); }
+
+.card:hover::before { opacity: 1; }
+.card:hover { border-color: var(--border-light); }
+
+.iconWrap {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.iconWrap[data-accent="teal"]  { background: var(--teal-dim);  color: var(--teal);  }
+.iconWrap[data-accent="blue"]  { background: var(--blue-dim);  color: var(--blue);  }
+.iconWrap[data-accent="amber"] { background: var(--amber-dim); color: var(--amber); }
+.iconWrap[data-accent="coral"] { background: var(--coral-dim); color: var(--coral); }
+.iconWrap[data-accent="muted"] { background: var(--bg-raised); color: var(--text-muted); }
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.valueRow {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.value {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.value[data-dimmed="true"] {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.unit {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Skeleton */
+.skeleton {
+  height: 68px;
+  background: linear-gradient(90deg, var(--bg-surface) 25%, var(--bg-raised) 50%, var(--bg-surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (max-width: 1100px) {
+  .bar { grid-template-columns: repeat(3, 1fr); }
+}

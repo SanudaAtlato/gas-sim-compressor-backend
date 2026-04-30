@@ -1,0 +1,136 @@
+{
+  "dataset_id": "iraqi_crude_paa_rashid_2019",
+  "fluid": {
+    "type": "crude_oil",
+    "name": "Iraqi crude oil",
+    "source": "Al-Najaf refinery, Iraq",
+    "temperature_C": 25,
+    "viscosity_cP": 27.55,
+    "specific_gravity": 0.89
+  },
+  "dra": {
+    "type": "polymeric_additive",
+    "name": "Poly Acrylic Acid",
+    "abbreviation": "PAA"
+  },
+  "experiment": {
+    "pipe_orientation": "horizontal",
+    "pipe_length_m": 5.0,
+    "pipe_inner_diameter_m": 0.0508,
+    "flow_rate_m3_s": 0.0081,
+    "pump_flow_rate_L_min": 30,
+    "pump_max_head_m": 30,
+    "pump_max_power_hp": 0.74
+  },
+  "drag_reduction_data": [
+    {
+      "concentration_ppm": 0,
+      "drag_reduction_percent": 0.0,
+      "drag_reduction_fraction": 0.0
+    },
+    {
+      "concentration_ppm": 50,
+      "drag_reduction_percent": 5.5,
+      "drag_reduction_fraction": 0.055
+    },
+    {
+      "concentration_ppm": 100,
+      "drag_reduction_percent": 9.0,
+      "drag_reduction_fraction": 0.09
+    },
+    {
+      "concentration_ppm": 150,
+      "drag_reduction_percent": 12.0,
+      "drag_reduction_fraction": 0.12
+    },
+    {
+      "concentration_ppm": 200,
+      "drag_reduction_percent": 15.0,
+      "drag_reduction_fraction": 0.15
+    },
+    {
+      "concentration_ppm": 250,
+      "drag_reduction_percent": 16.0,
+      "drag_reduction_fraction": 0.16
+    }
+  ],
+  "recommended_fit_models": [
+    {
+      "model_name": "rational_saturation_model",
+      "equation": "DR = (a * C) / (1 + b * C)",
+      "C_unit": "ppm",
+      "DR_unit": "fraction",
+      "fit_parameters": {
+        "a": null,
+        "b": null
+      }
+    },
+    {
+      "model_name": "exponential_saturation_model",
+      "equation": "DR = DRmax * (1 - exp(-kC * C))",
+      "C_unit": "ppm",
+      "DR_unit": "fraction",
+      "fit_parameters": {
+        "DRmax": null,
+        "kC": null
+      }
+    }
+  ],
+  "valid_range": {
+    "concentration_ppm_min": 0,
+    "concentration_ppm_max": 250,
+    "temperature_C": 25,
+    "pipe_inner_diameter_m": 0.0508
+  },
+  "degradation_model": {
+    "available": true,
+    "data_status": "synthetic_demo_data",
+    "kd": 0.004,
+    "kd_unit": "1/km",
+    "model": "C_active(x) = C_inj * exp(-kd * x)",
+    "assumed_injection_concentration_ppm": 250,
+    "synthetic_degradation_data": [
+      {
+        "distance_km": 0,
+        "active_concentration_ppm": 250.0
+      },
+      {
+        "distance_km": 25,
+        "active_concentration_ppm": 226.21
+      },
+      {
+        "distance_km": 50,
+        "active_concentration_ppm": 204.68
+      },
+      {
+        "distance_km": 75,
+        "active_concentration_ppm": 185.2
+      },
+      {
+        "distance_km": 100,
+        "active_concentration_ppm": 167.58
+      }
+    ],
+    "reason": "No validated PAA crude-oil distance-vs-DR degradation data was available. This kd value is generated for demo-level modeling only.",
+    "warning": "Do not use this kd for final engineering design without experimental or field validation."
+  },
+  "source_reference": {
+    "title": "Experimental Investigation of Drag Reduction by a Polymeric Additive in Crude Oil Flow in Horizontal Pipe",
+    "authors": [
+      "Farhan Lafta Rashid",
+      "Haider Nadhom Azziz",
+      "Shaheed Mahdi Talib"
+    ],
+    "journal": "Journal of Advanced Research in Fluid Mechanics and Thermal Sciences",
+    "volume": 60,
+    "issue": 1,
+    "pages": "15-23",
+    "year": 2019
+  },
+  "notes": [
+    "Drag reduction values were extracted approximately from Figure 10.",
+    "Maximum drag reduction reported in the paper is 16% at 250 ppm.",
+    "This dataset is valid only for Iraqi crude oil with PAA under the reported experimental conditions.",
+    "The kd value is synthetic and assumed only for demo-level degradation modeling."
+  ]
+}

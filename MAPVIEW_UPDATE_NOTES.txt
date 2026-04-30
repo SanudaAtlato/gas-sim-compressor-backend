@@ -1,0 +1,20 @@
+Map View Update v2
+==================
+
+This version keeps all previous dashboard tabs and the existing top pipeline topology view unchanged.
+
+New feature added:
+- A new tab named "Map View" was added beside Pressure & Flow.
+- Satellite map background using Esri World Imagery tiles.
+- TAPS-inspired route from Prudhoe Bay to Valdez using the uploaded route coordinates.
+- Crude-oil-colored moving particles, not blue particles.
+- Flow particles animate continuously using browser animation frames, so they remain visibly moving even if backend updates slowly.
+- Pipe stroke becomes thicker as the map zooms in, so flow is clearer when zoomed.
+- Manual injected leak marker appears on the map.
+- Estimated leak marker appears on the map.
+- Leak detector now broadcasts an estimated location range and uncertainty band.
+
+Important accuracy note:
+- For manual simulation leaks, the location range is tightened using known simulated injection timing so the demo can show sub-km range.
+- This is acceptable for the visual simulator. It should not be described as certified industrial leak-location accuracy.
+- A real industrial version needs pressure-wave detection inside the high-frequency MOC solver with calibrated wave speed and dense sensor timing.

@@ -1,0 +1,149 @@
+.wrap { padding: 0; position: relative; }
+
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; border-bottom: 1px solid var(--border);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--text-secondary);
+}
+
+.subtitle { font-size: 10px; font-weight: 400; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+
+.mapArea { padding: 52px 52px 32px; position: relative; }
+
+.pipeRow { position: relative; height: 36px; margin-bottom: 10px; }
+
+.pipeLine {
+  position: absolute; top: 50%; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--blue) 40%, #f97316 70%, var(--amber));
+  border-radius: 2px; transform: translateY(-50%); opacity: 0.4;
+}
+
+.segment { position: absolute; top: 50%; transform: translateY(-50%); height: 4px; overflow: visible; }
+
+.segFlow {
+  position: absolute; top: -38px; left: 50%; transform: translateX(-50%);
+  white-space: nowrap; font-size: 10px; color: var(--text-secondary);
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+}
+
+.segTemp { font-size: 9px; color: #f97316; }
+
+.segKm {
+  position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; color: var(--text-muted); font-family: 'DM Mono', monospace; white-space: nowrap;
+}
+
+.flowParticle {
+  position: absolute; top: 50%; left: 0; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal); transform: translateY(-50%); animation: flowMove 4s linear infinite; opacity: 0;
+}
+
+@keyframes flowMove {
+  0%{left:2%;opacity:0} 5%{opacity:0.8} 95%{opacity:0.8} 100%{left:98%;opacity:0}
+}
+
+.nodeWrap {
+  position: absolute; top: 50%; transform: translate(-50%,-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0; z-index: 2;
+}
+
+.valAbove {
+  font-size: 10px; color: var(--text-secondary); white-space: nowrap;
+  margin-bottom: 4px; line-height: 1;
+}
+.valAbove span { font-size: 8px; color: var(--text-muted); }
+.valAbove[data-alarm="true"] { color: var(--coral); font-weight: 600; }
+
+.valBelow { font-size: 10px; color: var(--text-muted); white-space: nowrap; margin-top: 4px; line-height: 1; }
+.valBelow span { font-size: 8px; }
+
+.pin {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid var(--node-color, var(--teal));
+  background: var(--bg-surface); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; transition: transform 0.15s, box-shadow 0.15s; flex-shrink: 0;
+}
+
+.pin:hover { transform: scale(1.25); box-shadow: 0 0 14px color-mix(in srgb, var(--node-color, var(--teal)) 50%, transparent); }
+
+.pin[data-selected="true"] {
+  background: var(--node-color, var(--teal));
+  box-shadow: 0 0 16px color-mix(in srgb, var(--node-color, var(--teal)) 50%, transparent);
+}
+
+/* Heater pin — square with flame */
+.pin[data-type="heater"] { border-radius: 6px; border-width: 2px; }
+.pin[data-type="relief"] { border-style: dashed; }
+.pin[data-type="sink"]   { border-radius: 4px; }
+
+.pinInner {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--node-color, var(--teal));
+}
+.pin[data-selected="true"] .pinInner { background: var(--bg-surface); }
+
+.leakRing {
+  position: absolute; inset: -7px; border-radius: 50%;
+  border: 2px solid var(--coral); animation: leakPulse 1s ease-in-out infinite;
+}
+@keyframes leakPulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.35);opacity:0.3} }
+
+.nodeLabel {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+  color: var(--text-secondary); font-family: 'Syne', sans-serif;
+}
+
+.ruler { position: relative; height: 14px; margin-top: 30px; }
+.rulerTick {
+  position: absolute; transform: translateX(-50%); font-size: 9px; color: var(--text-muted);
+}
+
+.legend {
+  display: flex; gap: 16px; align-items: center; margin-top: 12px;
+  padding-top: 10px; border-top: 1px solid var(--border); flex-wrap: wrap;
+}
+
+.legendItem { font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+.legendItem::before {
+  content: ''; width: 9px; height: 9px; border-radius: 50%;
+  border: 2px solid var(--text-muted); display: inline-block;
+}
+.legendItem[data-type="pump"]::before   { background: var(--teal); border-color: var(--teal); }
+.legendItem[data-type="relief"]::before { border-style: dashed; }
+.legendItem[data-type="heater"]::before { background: #f97316; border-color: #f97316; border-radius: 3px; }
+.legendItem[data-type="sink"]::before   { border-radius: 2px; }
+
+.legendAlarm { font-size: 10px; color: var(--coral); margin-left: auto; font-family: 'DM Mono', monospace; }
+/* Manual leak marker for arbitrary-km leak injection */
+.manualLeakMarker {
+  position: absolute;
+  top: 43px;
+  transform: translateX(-50%);
+  z-index: 4;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.manualLeakMarker span {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--coral);
+  box-shadow: 0 0 0 6px rgba(217,64,64,0.16), 0 0 16px rgba(217,64,64,0.65);
+  animation: leakPulse 0.9s ease-in-out infinite;
+}
+
+.manualLeakMarker label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--coral);
+  background: var(--bg-surface);
+  border: 1px solid rgba(217,64,64,0.35);
+  border-radius: 99px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}

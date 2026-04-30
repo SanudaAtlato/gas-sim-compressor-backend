@@ -1,0 +1,25 @@
+# Claude Code — never commit tokens/settings
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Node / Vite
+node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.*.local
+*.local
+
+# OS
+.DS_Store
+Thumbs.db

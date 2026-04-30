@@ -1,0 +1,290 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-void);
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 52px;
+  background: var(--bg-base);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.headerLeft  { display: flex; align-items: center; gap: 20px; }
+.headerRight { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+
+.mainViewBtns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo { display: flex; align-items: center; gap: 10px; }
+
+.logoPipe {
+  display: block; width: 28px; height: 6px;
+  background: linear-gradient(90deg, var(--teal), var(--amber));
+  border-radius: 3px; position: relative;
+}
+.logoPipe::before, .logoPipe::after {
+  content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+  width: 10px; height: 10px; border-radius: 50%; border: 2px solid currentColor;
+}
+.logoPipe::before { left: -5px;  color: var(--teal);  }
+.logoPipe::after  { right: -5px; color: var(--amber); }
+
+.logoText {
+  font-size: 13px; font-weight: 800;
+  letter-spacing: 0.12em; color: var(--text-primary);
+}
+.logoText span { color: var(--teal); margin: 0 3px; }
+
+.headerMeta {
+  font-size: 11px; color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  padding-left: 20px; border-left: 1px solid var(--border);
+}
+
+/* ── Start / Stop buttons ─────────────────────────────────── */
+.startBtn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 16px; border-radius: 8px;
+  font-size: 12px; font-family: 'DM Mono', monospace; font-weight: 600;
+  letter-spacing: 0.03em; cursor: pointer; border: none;
+  background: var(--teal); color: #fff;
+  transition: background 0.15s, opacity 0.15s;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--teal) 35%, transparent);
+}
+.startBtn:hover:not(:disabled) { background: #007a67; }
+.startBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.stopBtn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 16px; border-radius: 8px;
+  font-size: 12px; font-family: 'DM Mono', monospace; font-weight: 600;
+  letter-spacing: 0.03em; cursor: pointer; border: none;
+  background: var(--coral); color: #fff;
+  transition: background 0.15s, opacity 0.15s;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--coral) 30%, transparent);
+}
+.stopBtn:hover:not(:disabled) { background: #b03030; }
+.stopBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Sim status message ───────────────────────────────────── */
+.simMsg {
+  font-size: 11px; color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  padding: 4px 10px;
+  background: var(--bg-raised);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.alarmBadge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 99px;
+  background: var(--coral-dim); border: 1px solid var(--coral);
+  color: var(--coral); font-size: 11px; font-family: 'DM Mono', monospace;
+  animation: alarmPulse 2s ease-in-out infinite;
+}
+@keyframes alarmPulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+
+.connBadge {
+  display: flex; align-items: center; gap: 6px; padding: 4px 10px;
+  border-radius: 99px; font-size: 10px; font-family: 'DM Mono', monospace;
+  font-weight: 500; letter-spacing: 0.06em; border: 1px solid;
+}
+.connBadge[data-connected="true"]  { border-color:var(--teal); color:var(--teal); background:var(--teal-dim); }
+.connBadge[data-connected="false"] { border-color:var(--text-muted); color:var(--text-muted); }
+
+.simTime { font-size: 11px; color: var(--text-muted); letter-spacing: 0.04em; }
+
+.controlsBtn {
+  display: flex; align-items: center; gap: 6px; padding: 6px 14px;
+  border-radius: 8px; font-size: 12px; font-family: 'DM Mono', monospace;
+  font-weight: 500; border: 1px solid var(--border-light);
+  background: var(--bg-raised); color: var(--text-secondary);
+  cursor: pointer; transition: all 0.15s;
+}
+.controlsBtn:hover { border-color:var(--teal); color:var(--teal); background:var(--teal-dim); }
+
+.viewSwitchBtn,
+.returnBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  border: 1px solid var(--border-light);
+  background: var(--bg-raised);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.viewSwitchBtn[data-active="true"] {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--teal-dim);
+}
+
+.viewSwitchBtn:hover,
+.returnBtn:hover {
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+.returnBtn {
+  border-color: var(--amber);
+  color: var(--amber);
+  background: var(--amber-dim);
+}
+
+.returnBtn:hover {
+  border-color: var(--amber);
+  color: #9a6406;
+}
+
+/* ── Main ────────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px;
+  overflow: hidden;
+}
+
+.networkSection { flex-shrink: 0; }
+
+/* ── Stopped banner ──────────────────────────────────────── */
+.stoppedBanner {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  font-size: 14px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Tab bar ─────────────────────────────────────────────── */
+.tabBar {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.tabBtn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 16px; border-radius: 8px;
+  font-size: 12px; font-family: 'DM Mono', monospace; font-weight: 500;
+  border: 1px solid var(--border); background: var(--bg-raised);
+  color: var(--text-muted); cursor: pointer; transition: all 0.15s;
+}
+.tabBtn[data-active="true"] {
+  border-color: var(--teal); color: var(--teal); background: var(--teal-dim);
+}
+.tabBtn:hover:not([data-active="true"]) {
+  border-color: var(--border-light); color: var(--text-secondary);
+}
+
+/* ── Chart panel ─────────────────────────────────────────── */
+.chartPanel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.twoCol {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.chartPanel > * { flex: 1; min-height: 0; }
+
+.specialViewPanel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.specialViewPanel > * {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 20px; border-top: 1px solid var(--border);
+  background: var(--bg-base); font-size: 9px; color: var(--text-muted);
+  font-family: 'DM Mono', monospace; letter-spacing: 0.05em; flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .header {
+    height: auto;
+    padding: 10px 16px;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .headerLeft,
+  .headerRight,
+  .mainViewBtns {
+    flex-wrap: wrap;
+  }
+
+  .twoCol { grid-template-columns: 1fr; }
+}
+
+/* ── Pause button ───────────────────────────────────────────── */
+.pauseBtn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 14px; border-radius: 8px;
+  font-size: 12px; font-family: 'DM Mono', monospace; font-weight: 600;
+  border: none; background: var(--amber); color: #fff;
+  cursor: pointer; transition: background 0.15s, opacity 0.15s;
+}
+.pauseBtn:hover:not(:disabled) { background: #b07010; }
+.pauseBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Paused badge ───────────────────────────────────────────── */
+.pausedBadge {
+  padding: 4px 10px; border-radius: 99px;
+  font-size: 11px; font-family: 'DM Mono', monospace; font-weight: 600;
+  border: 1px solid var(--amber); color: var(--amber);
+  background: var(--amber-dim);
+  animation: pausePulse 1.8s ease-in-out infinite;
+}
+@keyframes pausePulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+/* ── Status message ─────────────────────────────────────────── */
+.statusMsg {
+  font-size: 11px; color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  padding: 4px 10px; background: var(--bg-raised);
+  border-radius: 6px; border: 1px solid var(--border);
+}

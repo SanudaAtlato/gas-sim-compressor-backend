@@ -1,0 +1,11 @@
+UI Update Included
+==================
+
+This package updates the UI layout as requested:
+- Map View removed from lower sub-tabs
+- Leak Detection removed from lower sub-tabs
+- Added top header buttons: Map View and Leak Center
+- Added a return button: Back to Overview
+- Dashboard remains the main default view with the original lower tabs kept for:
+  Pressure & Flow, Temperature, Friction Factor, DRA Concentration
+- Map View and Leak Center now open as full-screen workspace panels

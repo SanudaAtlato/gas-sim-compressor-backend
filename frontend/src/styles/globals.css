@@ -1,0 +1,81 @@
+/* ── Design tokens — LIGHT THEME ──────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg-void:    #f0f2f5;
+  --bg-base:    #ffffff;
+  --bg-surface: #ffffff;
+  --bg-raised:  #f5f6f8;
+  --bg-hover:   #ebedf0;
+
+  /* Borders */
+  --border:       #e0e3e8;
+  --border-light: #c8cdd6;
+
+  /* Accent — teal */
+  --teal:       #009e85;
+  --teal-dim:   rgba(0, 158, 133, 0.10);
+  --teal-glow:  rgba(0, 158, 133, 0.30);
+
+  /* Accent — amber */
+  --amber:      #d4870a;
+  --amber-dim:  rgba(212, 135, 10, 0.10);
+  --amber-glow: rgba(212, 135, 10, 0.30);
+
+  /* Accent — coral */
+  --coral:      #d94040;
+  --coral-dim:  rgba(217, 64, 64, 0.10);
+
+  /* Accent — blue */
+  --blue:       #2b7fc4;
+  --blue-dim:   rgba(43, 127, 196, 0.10);
+
+  /* Text */
+  --text-primary:   #1a1d23;
+  --text-secondary: #454c5c;
+  --text-muted:     #8a93a6;
+  --text-teal:      #009e85;
+  --text-amber:     #d4870a;
+
+  /* Chart colours */
+  --c0: #009e85;
+  --c1: #d4870a;
+  --c2: #2b7fc4;
+  --c3: #7c4dbd;
+  --c4: #d95f20;
+  --c5: #c0392b;
+
+  /* Spacing */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-void); }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 99px; }
+
+/* ── Utilities ──────────────────────────────────────────── */
+.mono { font-family: 'DM Mono', monospace; }
+.syne { font-family: 'Syne', sans-serif; }
+
+/* Card */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}

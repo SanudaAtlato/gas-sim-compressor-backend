@@ -1,0 +1,211 @@
+.wrap { padding: 0; }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.sub {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+/* ── Card ─────────────────────────────────────── */
+.card {
+  position: relative;
+  padding: 14px 14px 12px 18px;
+  border-right: 1px solid var(--border);
+}
+
+.card:last-child { border-right: none; }
+
+.colorBar {
+  position: absolute;
+  left: 0; top: 10px; bottom: 10px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--pipe-color, var(--teal));
+  transition: background 0.4s;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.pipeName {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.pipeDesc {
+  font-size: 9px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  line-height: 1.4;
+}
+
+.tempBig {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1;
+  transition: color 0.4s;
+}
+
+.tempBig span {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: 1px;
+}
+
+/* ── Slider ───────────────────────────────────── */
+.sliderRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.sliderLim {
+  font-size: 9px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  flex-shrink: 0;
+}
+
+.slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 99px;
+  background: linear-gradient(
+    to right,
+    var(--col, var(--teal)) 0%,
+    var(--col, var(--teal)) var(--pct, 50%),
+    var(--border) var(--pct, 50%)
+  );
+  outline: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--col, var(--teal));
+  border: 2px solid var(--bg-surface);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+}
+
+.slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+.applyBtn {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--border-light);
+  background: var(--bg-raised);
+  color: var(--text-secondary);
+  cursor: pointer;
+  min-width: 36px;
+  text-align: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.applyBtn:hover:not(:disabled) {
+  border-color: var(--pipe-color, var(--teal));
+  color: var(--pipe-color, var(--teal));
+  background: var(--bg-hover);
+}
+
+.applyBtn[data-status="ok"] {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--teal-dim);
+}
+
+.applyBtn[data-status="error"] {
+  border-color: var(--coral);
+  color: var(--coral);
+}
+
+.applyBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Properties ───────────────────────────────── */
+.props {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.propRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.propLabel {
+  font-size: 9px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.propVal {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+.propVal span {
+  font-size: 8px;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+
+/* ── Footer ───────────────────────────────────── */
+.footer {
+  padding: 8px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 9px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.03em;
+}
+
+@media (max-width: 1200px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+  .card { border-bottom: 1px solid var(--border); }
+}
+
+@media (max-width: 760px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}

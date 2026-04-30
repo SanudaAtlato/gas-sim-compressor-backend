@@ -1,0 +1,521 @@
+/* ── Overlay ─────────────────────────────────────────────── */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(26,29,35,0.55);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999; padding: 20px;
+}
+
+.modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+  width: 100%; max-width: 860px; max-height: 88vh;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+/* ── Modal header ─────────────────────────────────────────── */
+.modalHeader {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 20px 24px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+
+.modalTitle {
+  font-size: 16px; font-weight: 700; letter-spacing: 0.05em;
+  color: var(--text-primary); margin-bottom: 2px;
+}
+
+.modalSub { font-size: 11px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+
+.closeBtn {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--bg-raised);
+  color: var(--text-muted); cursor: pointer; font-size: 12px;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.closeBtn:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+.tabs {
+  display: flex; padding: 0 24px;
+  border-bottom: 1px solid var(--border); flex-shrink: 0; overflow-x: auto;
+}
+
+.tab {
+  padding: 10px 16px; font-size: 12px; font-family: 'DM Mono', monospace;
+  font-weight: 500; color: var(--text-muted); background: none;
+  border: none; border-bottom: 2px solid transparent;
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  display: flex; align-items: center; gap: 6px; margin-bottom: -1px;
+}
+.tab[data-active="true"] { color: var(--teal); border-bottom-color: var(--teal); }
+.tab:hover:not([data-active="true"]) { color: var(--text-secondary); }
+
+.pendingDot {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--amber); color: #fff; font-size: 9px; font-weight: 700;
+}
+
+/* ── Tab content ──────────────────────────────────────────── */
+.tabContent { flex: 1; overflow-y: auto; padding: 16px 24px; }
+
+.tabHint {
+  font-size: 11px; color: var(--text-muted); margin-bottom: 14px;
+  font-family: 'DM Mono', monospace; line-height: 1.5;
+  padding: 10px 12px; background: var(--bg-raised);
+  border-radius: 8px; border-left: 3px solid var(--teal);
+}
+
+/* ── Shared: pump & valve grid ────────────────────────────── */
+.pumpGrid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+}
+
+/* ── Shared card base ─────────────────────────────────────── */
+.pumpCard, .valveCard {
+  position: relative; padding: 14px 14px 14px 18px;
+  border: 1px solid var(--border); border-radius: 10px; transition: background 0.2s;
+}
+
+.pumpCard[data-on="true"]   { background: rgba(0,158,133,0.04); }
+.pumpCard[data-pending="true"] { border-color: var(--amber); }
+
+/* Valve state colours */
+.valveCard[data-state="open"]    { background: rgba(0,158,133,0.03); }
+.valveCard[data-state="closed"]  { background: rgba(217,64,64,0.04);  border-color: var(--coral); }
+.valveCard[data-state="closing"] { background: rgba(212,135,10,0.04); border-color: var(--amber); }
+.valveCard[data-state="opening"] { background: rgba(212,135,10,0.04); border-color: var(--amber); }
+
+/* ── Accent stripe ────────────────────────────────────────── */
+.pumpAccent, .valveAccent {
+  position: absolute; left:0; top:10px; bottom:10px;
+  width: 3px; border-radius: 0 2px 2px 0;
+  background: var(--border-light); transition: background 0.3s;
+}
+.pumpAccent[data-on="true"] {
+  background: var(--teal); box-shadow: 0 0 6px var(--teal-glow);
+}
+
+/* ── Card top row ─────────────────────────────────────────── */
+.pumpTop, .valveTop {
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;
+}
+
+.pumpName, .valveName {
+  font-size: 16px; font-weight: 800; letter-spacing: 0.05em;
+  color: var(--text-primary); margin-bottom: 2px;
+}
+.pumpLabel, .valveLabel {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.07em;
+  color: var(--text-muted); text-transform: uppercase;
+}
+.pumpSub, .valveSub { font-size: 9px; color: var(--text-muted); margin-top: 1px; }
+
+/* ── Status badges ────────────────────────────────────────── */
+.pumpBadge, .valveBadge {
+  display: flex; align-items: center; gap: 5px;
+  padding: 3px 9px; border-radius: 99px; font-size: 9px;
+  font-family: 'DM Mono', monospace; font-weight: 600;
+  letter-spacing: 0.07em; border: 1px solid; white-space: nowrap; flex-shrink: 0;
+}
+.pumpBadge[data-on="false"] { border-color: var(--border); color: var(--text-muted); }
+.pumpBadge[data-on="true"]  { border-color: var(--teal);   color: var(--teal); background: var(--teal-dim); }
+
+.pumpDot {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted);
+}
+.pumpDot[data-on="true"] {
+  background: var(--teal); animation: blink 1.2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+
+.pendingTag { font-size: 8px; opacity: 0.7; }
+
+/* ── Ramp / progress bar ──────────────────────────────────── */
+.rampRow, .valveBarRow {
+  display: flex; align-items: center; gap: 7px; margin-bottom: 8px;
+}
+.rampLbl { font-size: 9px; color: var(--text-muted); width: 34px; flex-shrink: 0; }
+
+.rampTrack {
+  flex: 1; height: 4px; background: var(--bg-raised);
+  border-radius: 99px; overflow: hidden;
+}
+.rampFill {
+  height: 100%; border-radius: 99px;
+  background: var(--border-light); transition: width 0.5s ease;
+}
+.rampFill[data-on="true"] { background: var(--teal); }
+
+.rampPct { font-size: 10px; color: var(--text-secondary); width: 32px; text-align: right; flex-shrink: 0; }
+
+/* ── Alpha / tau readout ──────────────────────────────────── */
+.alphaRow {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+}
+.alphaLabel { font-size: 9px; color: var(--text-muted); }
+.alphaVal   { font-size: 11px; color: var(--text-secondary); }
+
+/* ── Action buttons row ───────────────────────────────────── */
+.btnRow {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+
+.btnStart, .btnStop {
+  display: block; width: 100%; padding: 9px 0;
+  border-radius: 6px; font-size: 11px;
+  font-family: 'DM Mono', monospace; font-weight: 500;
+  letter-spacing: 0.04em; text-align: center; cursor: pointer;
+  border: 1px solid; transition: background 0.15s, color 0.15s, opacity 0.15s;
+  line-height: 1;
+}
+
+/* START / OPEN — teal */
+.btnStart {
+  border-color: var(--teal); color: var(--teal); background: var(--teal-dim);
+}
+.btnStart:hover:not(:disabled) { background: var(--teal); color: #fff; }
+.btnStart:disabled { border-color: var(--border); color: var(--text-muted); background: transparent; cursor: not-allowed; opacity: 0.4; }
+
+/* STOP / CLOSE — coral */
+.btnStop {
+  border-color: var(--coral); color: var(--coral); background: var(--coral-dim);
+}
+.btnStop:hover:not(:disabled) { background: var(--coral); color: #fff; }
+.btnStop:disabled { border-color: var(--border); color: var(--text-muted); background: transparent; cursor: not-allowed; opacity: 0.4; }
+
+/* ── Hint strip ───────────────────────────────────────────── */
+.hint {
+  margin-top: 10px; padding: 5px 8px; border-radius: 5px;
+  font-size: 9px; color: var(--amber); background: var(--amber-dim);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Heater card ──────────────────────────────────────────── */
+.heaterCard {
+  position: relative; border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 14px 14px 18px; margin-bottom: 10px;
+  transition: background 0.2s;
+}
+.heaterCard[data-on="true"]  { background: rgba(249,115,22,0.04); }
+.heaterCard[data-on="false"] { background: var(--bg-raised); opacity: 0.7; }
+
+.heaterAccent {
+  position: absolute; left:0; top:10px; bottom:10px;
+  width:3px; border-radius:0 2px 2px 0;
+  background: #f97316; box-shadow: 0 0 6px rgba(249,115,22,0.35);
+}
+
+.heaterTop { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+.heaterName { font-size:15px; font-weight:700; color:var(--text-primary); margin-bottom:2px; }
+.heaterLabel { font-size:9px; font-weight:600; letter-spacing:0.07em; color:var(--text-muted); text-transform:uppercase; }
+.heaterSub { font-size:9px; color:var(--text-muted); margin-top:1px; }
+.heaterCatalog { font-size:9px; color:var(--text-muted); opacity:0.7; margin-top:2px; }
+
+/* Toggle switch */
+.toggle { display:flex; align-items:center; gap:7px; cursor:pointer; flex-shrink:0; }
+.toggle input { display:none; }
+.toggleSlider {
+  width:36px; height:20px; border-radius:10px; background:var(--border-light);
+  position:relative; transition:background 0.2s; flex-shrink:0;
+}
+.toggleSlider::after {
+  content:''; position:absolute; top:3px; left:3px;
+  width:14px; height:14px; border-radius:50%; background:#fff;
+  transition:transform 0.2s; box-shadow:0 1px 3px rgba(0,0,0,0.15);
+}
+.toggle input:checked + .toggleSlider { background:#f97316; }
+.toggle input:checked + .toggleSlider::after { transform:translateX(16px); }
+.toggleLabel { font-size:11px; font-family:'DM Mono',monospace; color:var(--text-secondary); }
+
+/* Heater slider */
+.heaterSliderRow { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.heaterSlider {
+  flex:1; -webkit-appearance:none; appearance:none; height:4px; border-radius:99px;
+  background:linear-gradient(to right, var(--col,#f97316) 0%, var(--col,#f97316) var(--pct,50%), var(--border) var(--pct,50%));
+  outline:none; cursor:pointer;
+}
+.heaterSlider::-webkit-slider-thumb {
+  -webkit-appearance:none; width:14px; height:14px; border-radius:50%;
+  background:var(--col,#f97316); border:2px solid var(--bg-surface);
+  box-shadow:0 1px 4px rgba(0,0,0,0.12); cursor:pointer; transition:transform 0.1s;
+}
+.heaterSlider::-webkit-slider-thumb:hover { transform:scale(1.2); }
+.heaterTempVal { font-size:14px; color:var(--text-primary); width:44px; text-align:right; flex-shrink:0; }
+
+.heaterStats {
+  display:flex; flex-direction:column; gap:5px;
+  padding:8px 10px; background:var(--bg-raised); border-radius:7px;
+}
+.heaterStat {
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-size:10px; color:var(--text-muted);
+}
+.powerBar { height:4px; background:var(--border); border-radius:99px; overflow:hidden; margin:4px 0 2px; }
+.powerFill { height:100%; background:#f97316; border-radius:99px; transition:width 0.4s; }
+
+/* ── DRA cards ────────────────────────────────────────────── */
+.draGrid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px; }
+
+.draCard {
+  position:relative; border:1px solid var(--border);
+  border-radius:10px; padding:12px 14px 12px 18px; transition:background 0.2s;
+}
+.draCard[data-on="true"] { background:rgba(43,127,196,0.05); border-color:#2b7fc4; }
+
+.draAccent {
+  position:absolute; left:0; top:10px; bottom:10px;
+  width:3px; border-radius:0 2px 2px 0; background:var(--border-light); transition:background 0.3s;
+}
+.draAccent[data-on="true"] { background:#2b7fc4; box-shadow:0 0 6px rgba(43,127,196,0.4); }
+
+.draTop { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+.draName { font-size:15px; font-weight:700; color:var(--text-primary); margin-bottom:2px; }
+.draSub  { font-size:9px; color:var(--text-muted); }
+
+.draSliderRow { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.draSlider {
+  flex:1; -webkit-appearance:none; appearance:none; height:4px; border-radius:99px;
+  background:linear-gradient(to right,#2b7fc4 0%,#2b7fc4 var(--pct,0%),var(--border) var(--pct,0%));
+  outline:none; cursor:pointer;
+}
+.draSlider::-webkit-slider-thumb {
+  -webkit-appearance:none; width:14px; height:14px; border-radius:50%;
+  background:#2b7fc4; border:2px solid var(--bg-surface);
+  box-shadow:0 1px 4px rgba(0,0,0,0.12); cursor:pointer; transition:transform 0.1s;
+}
+.draSlider::-webkit-slider-thumb:hover { transform:scale(1.2); }
+.draConc { font-size:13px; color:var(--text-primary); width:52px; text-align:right; flex-shrink:0; }
+
+.draStats {
+  display:flex; flex-direction:column; gap:4px;
+  padding:8px 10px; background:var(--bg-raised); border-radius:7px;
+}
+.draStatRow {
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-size:10px; color:var(--text-muted);
+}
+.draBar { height:4px; background:var(--border); border-radius:99px; overflow:hidden; margin:4px 0 2px; }
+.draBarFill { height:100%; background:#2b7fc4; border-radius:99px; transition:width 0.4s; }
+
+.draProfile { border:1px solid var(--border); border-radius:10px; padding:14px; margin-top:4px; }
+.draProfileTitle { font-size:11px; font-weight:700; color:var(--text-secondary); margin-bottom:10px; }
+.draProfileGrid  { display:flex; flex-direction:column; gap:6px; }
+.draProfileRow {
+  display:grid; grid-template-columns:7rem 1fr 5rem 4rem;
+  align-items:center; gap:8px; font-size:10px; color:var(--text-secondary);
+}
+.draProfileBar { height:4px; background:var(--border); border-radius:99px; overflow:hidden; }
+
+/* ── Thermal settings ─────────────────────────────────────── */
+.thermalGrid { display:flex; flex-direction:column; gap:12px; }
+
+.thermalCard { border:1px solid var(--border); border-radius:10px; padding:16px; }
+.thermalTitle { font-size:13px; font-weight:700; color:var(--text-primary); margin-bottom:6px; }
+.thermalDesc { font-size:11px; color:var(--text-muted); line-height:1.6; margin-bottom:14px; }
+
+.slimLbl { font-size:9px; color:var(--text-muted); font-family:'DM Mono',monospace; }
+
+/* ── Modal footer ─────────────────────────────────────────── */
+.modalFooter {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 24px; border-top:1px solid var(--border);
+  background:var(--bg-raised); flex-shrink:0;
+}
+.applyMsg { font-size:11px; color:var(--teal); font-family:'DM Mono',monospace; }
+
+.footerBtns { display:flex; gap:10px; margin-left:auto; }
+
+.cancelBtn {
+  padding:9px 20px; border-radius:8px; font-size:12px;
+  font-family:'DM Mono',monospace; border:1px solid var(--border);
+  background:transparent; color:var(--text-secondary); cursor:pointer; transition:all 0.15s;
+}
+.cancelBtn:hover { border-color:var(--border-light); color:var(--text-primary); }
+
+.applyBtn {
+  padding:9px 24px; border-radius:8px; font-size:12px;
+  font-family:'DM Mono',monospace; font-weight:600;
+  border:none; background:var(--teal); color:#fff;
+  cursor:pointer; transition:all 0.15s; letter-spacing:0.03em;
+}
+.applyBtn:hover:not(:disabled) { background:#007a67; }
+.applyBtn:disabled { opacity:0.5; cursor:not-allowed; }
+
+/* ── Pump toggle button (Stage START / Stage TRIP) ────────── */
+.pumpToggle {
+  width: 100%;
+  padding: 9px 0;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.15s;
+  text-align: center;
+  line-height: 1;
+}
+
+.pumpToggle[data-will="start"] {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--teal-dim);
+}
+
+.pumpToggle[data-will="start"]:hover {
+  background: var(--teal);
+  color: #fff;
+}
+
+.pumpToggle[data-will="stop"] {
+  border-color: var(--coral);
+  color: var(--coral);
+  background: var(--coral-dim);
+}
+
+.pumpToggle[data-will="stop"]:hover {
+  background: var(--coral);
+  color: #fff;
+}
+
+.pumpToggle:disabled {
+  border-color: var(--border);
+  color: var(--text-muted);
+  background: transparent;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* ── Interlock row ────────────────────────────────── */
+.interlockRow {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; padding: 14px 16px; margin-bottom: 14px;
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 10px; border-left: 3px solid var(--amber);
+}
+.interlockTitle {
+  font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;
+}
+.interlockDesc {
+  font-size: 10px; color: var(--text-muted); line-height: 1.5; max-width: 540px;
+}
+/* ── Manual leak injection ───────────────────────────────── */
+.leakCard, .activeLeakBox {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-raised);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.leakCard {
+  border-color: rgba(217,64,64,0.35);
+  background: rgba(217,64,64,0.035);
+}
+
+.leakTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.leakTitle { font-size: 15px; font-weight: 800; color: var(--text-primary); }
+.leakSub { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
+.leakReadout {
+  border: 1px solid var(--coral);
+  color: var(--coral);
+  background: var(--coral-dim);
+  border-radius: 99px;
+  padding: 4px 10px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.leakControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 14px;
+}
+
+.leakSlider {
+  flex: 1;
+  accent-color: var(--coral);
+}
+
+.leakFields {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.leakFields label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+}
+
+.leakFields input {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text-primary);
+  padding: 8px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+}
+
+.leakUnit {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  padding-bottom: 9px;
+}
+
+.leakMsg {
+  margin-top: 10px;
+  padding: 7px 9px;
+  border-radius: 7px;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+}
+
+.activeLeakTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.noLeaks {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+}
+
+.activeLeakRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+}
+
+.activeLeakRow:first-of-type { border-top: none; }
+.activeLeakRow strong { display: block; color: var(--coral); font-family: 'DM Mono', monospace; font-size: 10px; }
+.activeLeakRow span { display: block; color: var(--text-muted); margin-top: 2px; font-size: 10px; }

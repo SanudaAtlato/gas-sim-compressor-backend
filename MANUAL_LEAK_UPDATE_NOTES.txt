@@ -1,0 +1,37 @@
+Manual leak injection update
+============================
+
+What changed
+------------
+1. Backend now supports injecting a leak at any mainline km location:
+   POST /simulation/leak/add-location
+   Body: { "location_km": 350, "flow_kg_s": 80 }
+
+2. Backend snaps the requested km to the nearest MOC grid cell.
+   Current solver grid: dx = 2 km.
+
+3. MOC solver now supports arbitrary interior-cell leaks, not only station/node leaks.
+   The leak is modeled as an extra outflow from the selected cell.
+
+4. Leak detector keeps using:
+   - EWMA residual trend
+   - negative CUSUM
+   - negative pressure wave arrival times
+   - inlet/outlet flow imbalance
+   - valve/pump operation masking
+
+5. Frontend Controls modal now has a "Leak Injection" tab.
+   Use it to select the leak location and leak flow, then click "Inject Leak".
+
+6. The network map shows a red marker at the manually injected leak location.
+
+7. The Leak Detection tab shows:
+   - back-calculated leak location
+   - injected leak position for comparison
+   - triggered sensors
+   - CUSUM/EWMA/flow-balance status
+
+Important limitation
+--------------------
+This is still a demonstration-level transient solver, not a certified industrial RTTM.
+The arbitrary-km leak is physically better than forcing a pressure drop, because it removes mass/flow from the selected MOC grid cell. But because the solver stores one nodal velocity, the interior leak representation is still simplified.

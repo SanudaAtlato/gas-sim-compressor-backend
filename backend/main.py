@@ -75,6 +75,14 @@ fastapi_app.add_middleware(
 from api.routes import router as sim_router
 fastapi_app.include_router(sim_router)
 
+@fastapi_app.get("/health", tags=["health"])
+def health():
+    from simulation_service import get_service
+    try:
+        return {"status": "ok", "simulation": get_service("alaska").get_status()}
+    except Exception as e:
+        return {"status": "error", "detail": str(e)}
+
 _FRONTEND_DIST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "frontend", "dist")
 
 if os.path.isdir(_FRONTEND_DIST):
@@ -95,14 +103,6 @@ else:
             "socket"  : "/socket.io/",
             "event"   : "live_pipeline_update",
         }
-
-@fastapi_app.get("/health", tags=["health"])
-def health():
-    from simulation_service import get_service
-    try:
-        return {"status": "ok", "simulation": get_service("alaska").get_status()}
-    except Exception as e:
-        return {"status": "error", "detail": str(e)}
 
 
 # ── Mount Socket.IO as the OUTER ASGI wrapper ─────────────────────────────────

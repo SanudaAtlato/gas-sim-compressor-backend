@@ -746,12 +746,13 @@ class SimulationService:
         return merged
 
     def get_status(self) -> dict:
-        return {"running": self.running, "step": self.step_counter,
-                "simulated_time_s": round(self.solver.simulation_time,2) if self.solver else 0.0,
-                "active_leaks": self.get_leaks(), "pump_states": self.get_pump_states(),
-                "heater_states": self.get_heater_states(),
-                "ambient_temp_c": self._ambient_temp_c, "inlet_temp_c": self._inlet_temp_c,
-                "excel_file": self._excel_path}
+        raw = {"running": self.running, "step": self.step_counter,
+               "simulated_time_s": round(float(self.solver.simulation_time), 2) if self.solver else 0.0,
+               "active_leaks": self.get_leaks(), "pump_states": self.get_pump_states(),
+               "heater_states": self.get_heater_states(),
+               "ambient_temp_c": float(self._ambient_temp_c), "inlet_temp_c": float(self._inlet_temp_c),
+               "excel_file": self._excel_path}
+        return sanitize(raw)
 
     def get_latest(self): return self.history[-1] if self.history else None
 
@@ -931,7 +932,8 @@ class SimulationService:
                     "friction_profile": self._build_friction_profile(),
                 }
 
-                self.history = (self.history + [payload])[-self._history_maxlen:]
+                clean_payload = sanitize(payload)
+                self.history = (self.history + [clean_payload])[-self._history_maxlen:]
 
                 self._row_buffer.append(_make_row(
                     self.step_counter, sim_t, calc_p, sensor_p, flows_m3s,
@@ -941,7 +943,7 @@ class SimulationService:
                 ))
                 if len(self._row_buffer) >= EXCEL_FLUSH_EVERY: self._flush_excel()
 
-            if self.sio: asyncio.run(self._emit(payload))
+            if self.sio: asyncio.run(self._emit(clean_payload))
             self.step_counter += 1
 
             if self.step_counter % 25 == 0:

@@ -41,8 +41,8 @@ async def lifespan(app: FastAPI):
     from simulation_service import init_service
     print("\n🔄 Initialising Alaska pipeline simulation …")
     svc = init_service(pid="alaska", sio=sio)
-    # Simulation does NOT auto-start — wait for POST /simulation/start
-    print("   ✅ Service ready. POST /simulation/start to begin.")
+    svc.start()
+    print("   ✅ Simulation auto-started.")
     yield
     print("\n🔄 Shutting down …")
     svc.stop()
